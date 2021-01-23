@@ -50,6 +50,12 @@ class MyCanvasView(context: Context) : View(context) {
     private var motionTouchEventY = 0f
 
 
+    /*variables to cache the latest x and y values - after the
+    user stops moving and lifts off their touch, these will be
+    the starting points for the next path*/
+    private var currentX = 0f
+    private var currentY = 0f
+
     //path stores the path that is drawn when following the user's touch on the screen
     private val path = Path()
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -102,8 +108,15 @@ class MyCanvasView(context: Context) : View(context) {
 
         return super.onTouchEvent(event)
     }
+//called when the user first touches the screen
+    private fun touchStart(){
 
-    private fun touchStart(){}
+        path.reset()
+    path.moveTo(motionTouchEventX, motionTouchEventY)
+
+    currentX = motionTouchEventX
+    currentY = motionTouchEventY
+    }
     private fun touchMove(){}
     private fun touchUp(){}
 
