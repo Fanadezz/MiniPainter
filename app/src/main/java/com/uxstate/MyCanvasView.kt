@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
+import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 
@@ -30,16 +31,23 @@ class MyCanvasView(context: Context) : View(context) {
         //drawing color
         color = drawColor
         //smooths out edges of what is drawn without affecting the shape
-        isAntiAlias  = true
+        isAntiAlias = true
 
         //Dithering affects how colors with higher-precision that the device are down-sampled
         isDither = true
 
-        style = Paint.Style.STROKE//default:FILL
+        style = Paint.Style.STROKE //default:FILL
         strokeJoin = Paint.Join.ROUND //default: MITER
         strokeCap = Paint.Cap.ROUND // default: BUTT
         strokeWidth = STROKE_WIDTH //default: Hairline -width (really thin)
     }
+
+
+    /*motion touch event X and motion touch event Y variables for
+    caching the x and y coordinates of the current touch event*/
+
+    private var motionTouchEventX = 0f
+    private var motionTouchEventY = 0f
 
 
     //path stores the path that is drawn when following the user's touch on the screen
@@ -76,5 +84,27 @@ class MyCanvasView(context: Context) : View(context) {
         created on onSizeChanged()*/
     }
 
+/*override onTouchEvent method to cache the x and y coordinates of the passed in events*/
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+
+    motionTouchEventX = event.x
+    motionTouchEventY = event.y
+
+
+    //when expression to handle motion events
+    when(event.action){
+
+        MotionEvent.ACTION_DOWN -> touchStart()
+        MotionEvent.ACTION_MOVE -> touchMove()
+        MotionEvent.ACTION_UP -> touchUp()
+    }
+
+
+        return super.onTouchEvent(event)
+    }
+
+    private fun touchStart(){}
+    private fun touchMove(){}
+    private fun touchUp(){}
 
 }
